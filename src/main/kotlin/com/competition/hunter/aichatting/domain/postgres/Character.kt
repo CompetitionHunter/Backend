@@ -1,5 +1,6 @@
 package com.competition.hunter.aichatting.domain.postgres;
 
+import com.competition.hunter.aichatting.dto.CharacterDto
 import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -43,6 +44,15 @@ class Character(
 
     fun addSubscribe(subscribe: Subscribe) {
         this.subscribes?.add(subscribe)
+    }
+
+    fun toCharacterDto(): CharacterDto{
+        return CharacterDto(
+            this.id!!,
+            this.name,
+            this.profile,
+            this.work?.title
+        )
     }
 
 }
