@@ -1,5 +1,6 @@
 package com.competition.hunter.aichatting.domain.postgres;
 
+import com.competition.hunter.aichatting.dto.WorkDto
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,4 +28,11 @@ class Work (
         this.characters?.add(character)
     }
 
+    fun toWorkDto(): WorkDto {
+        return WorkDto(
+            this.title,
+            this.profile,
+            this.characters.map { it.toCharacterDto() }
+        )
+    }
 }

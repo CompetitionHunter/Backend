@@ -23,4 +23,12 @@ abstract class WorkRepositoryImpl : PostgresQuerydslSupport(Work::class.java), W
         return work != null
     }
 
+    override fun findGroupByWork(): List<Work> {
+        return from(qWork)
+            .groupBy(
+                qWork.title
+            )
+            .fetch()
+    }
+
 }
