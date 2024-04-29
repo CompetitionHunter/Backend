@@ -2,12 +2,9 @@ package com.competition.hunter.aichatting.domain.postgres;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import javax.jdo.annotations.Join
 
 @Data
 @Entity
@@ -15,8 +12,8 @@ import javax.jdo.annotations.Join
 class Subscribe (
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    val user: User? = null,
+    @JoinColumn(name = "member_id")
+    val member: Member? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "character_id")
@@ -25,7 +22,7 @@ class Subscribe (
 ) {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subscribe_id")
     val id: Long? = null
 

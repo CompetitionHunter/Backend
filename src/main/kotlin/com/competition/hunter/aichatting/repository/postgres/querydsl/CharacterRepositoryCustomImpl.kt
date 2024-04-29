@@ -2,16 +2,19 @@ package com.competition.hunter.aichatting.repository.postgres.querydsl
 
 import com.competition.hunter.aichatting.domain.postgres.Character
 import com.competition.hunter.aichatting.domain.postgres.QCharacter
-import com.competition.hunter.aichatting.dto.CharacterDto
-import com.competition.hunter.aichatting.repository.postgres.CharacterRepository
-import org.springframework.stereotype.Repository
+import com.querydsl.jpa.impl.JPAQueryFactory
+import org.springframework.stereotype.Component
 
-abstract class CharacterRepositoryImpl : PostgresQuerydslSupport(Character::class.java), CharacterRepositoryCustom {
+@Component
+class CharacterRepositoryCustomImpl(
+    private val queryFactory: JPAQueryFactory
+): CharacterRepositoryCustom {
 
     private val qCharacter = QCharacter.character
 
     override fun existsByName(name: String): Boolean {
-        var character = from(qCharacter)
+        var character = queryFactory
+            .from(qCharacter)
             .where(
                 qCharacter.name.eq(name)
             )
@@ -21,8 +24,9 @@ abstract class CharacterRepositoryImpl : PostgresQuerydslSupport(Character::clas
     }
 
     override fun findOrderBySubscribes(): List<Character> {
-        return from(qCharacter)
+        return queryFactory
+            .from(qCharacter)
             .orderBy(qCharacter.subscribes.size().desc())
-            .fetch()
+            .fetch() as List<Character>
     }
 }

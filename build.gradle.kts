@@ -7,6 +7,8 @@ plugins {
 	kotlin("jvm") version "1.9.23"
 	kotlin("plugin.spring") version "1.9.23"
 	kotlin("plugin.jpa") version "1.9.23"
+	kotlin("kapt") version "1.6.21"
+	idea
 }
 
 group = "com.competition.hunter"
@@ -37,15 +39,19 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.projectlombok:lombok")
 
-	implementation("com.querydsl:querydsl-jpa:5.0.0")
 	implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.0.0")
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
 	// implementation("org.springframework.ai:spring-ai-openai-spring-boot-starter")
+
+	// Querydsl 추가
+	implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
 
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
+	testImplementation("io.mockk:mockk:1.12.0")
 	runtimeOnly("com.h2database:h2")
 }
 
@@ -53,6 +59,20 @@ dependencyManagement {
 	imports {
 		// mavenBom("org.springframework.ai:spring-ai-bom:${property("springAiVersion")}")
 	}
+}
+
+// queryDSL 추가 : QueryDSL 빌드 옵션
+idea {
+	module {
+		val kaptMain = file("build/generated/source/kapt/main")
+		sourceDirs.add(kaptMain)
+		generatedSourceDirs.add(kaptMain)
+	}
+}
+
+// 추가적으로 열어줄 allOpen
+allOpen {
+	annotation("javax.persistence.Entity")
 }
 
 tasks.withType<KotlinCompile> {

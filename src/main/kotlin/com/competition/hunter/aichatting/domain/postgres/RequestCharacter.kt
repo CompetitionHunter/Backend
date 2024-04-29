@@ -1,6 +1,6 @@
 package com.competition.hunter.aichatting.domain.postgres;
 
-import com.competition.hunter.aichatting.domain.postgres.util.RequestStatus
+import com.competition.hunter.aichatting.domain.util.RequestStatus
 import jakarta.persistence.*;
 import lombok.Data;
 import javax.jdo.annotations.Join
@@ -10,7 +10,7 @@ import javax.jdo.annotations.Join
 @Table(name = "request_character")
 class RequestCharacter (
 
-    val user: String,
+    val member: String,
 
     @Column(name = "work_title")
     val workTitle: String,
@@ -21,7 +21,7 @@ class RequestCharacter (
 ) {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "request_character_id")
     val id: Long? = null
 

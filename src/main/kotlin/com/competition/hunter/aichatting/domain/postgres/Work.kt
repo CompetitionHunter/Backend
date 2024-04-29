@@ -16,7 +16,7 @@ class Work (
 ) {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "work_id")
     val id: Long? = null
 
