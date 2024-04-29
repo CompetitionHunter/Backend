@@ -18,4 +18,17 @@ class MemberRepositoryCustomImpl(
 
         return user != null
     }
+
+
+    override fun existByEmailAndPw(email: String, pw: String): Boolean {
+        var user = queryFactory
+            .from(qMember)
+            .where(
+                qMember.email.eq(email),
+                qMember.pw.eq(pw)
+            )
+            .fetchFirst()
+
+        return user != null
+    }
 }

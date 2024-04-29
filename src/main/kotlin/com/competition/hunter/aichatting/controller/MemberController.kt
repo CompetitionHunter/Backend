@@ -1,5 +1,6 @@
 package com.competition.hunter.aichatting.controller
 
+import com.competition.hunter.aichatting.dto.SignInDto
 import com.competition.hunter.aichatting.dto.SignUpDto
 import com.competition.hunter.aichatting.service.member.MemberService
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,5 +17,10 @@ class MemberController(
     @PostMapping("/signUp")
     fun signUp(@RequestBody dto: SignUpDto) : String {
         return memberService.signUp(dto)
+    }
+
+    @PostMapping("/signIn")
+    fun signIn(@RequestBody dto: SignInDto): String {
+        return memberService.signIn(dto)
     }
 }
