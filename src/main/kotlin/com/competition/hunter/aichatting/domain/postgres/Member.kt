@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.Data
 import org.jetbrains.annotations.NotNull
 import org.springframework.format.annotation.DateTimeFormat
+import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
 
 
 @Entity
 @Table(name = "member")
-class Member (
+class Member(
 
     @Column
     @NotNull
@@ -21,7 +23,8 @@ class Member (
 
     birthday: Date
 
-) {
+): UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
@@ -64,4 +67,25 @@ class Member (
         this.subscribes?.add(subscribe)
     }
 
+    override fun getAuthorities(): MutableCollection<out GrantedAuthority>? {
+        return null
+    }
+    override fun getPassword(): String {
+        return pw
+    }
+    override fun getUsername(): String {
+        return username
+    }
+    override fun isAccountNonExpired(): Boolean {
+        return true
+    }
+    override fun isAccountNonLocked(): Boolean {
+        return true
+    }
+    override fun isCredentialsNonExpired(): Boolean {
+        return true
+    }
+    override fun isEnabled(): Boolean {
+        return true
+    }
 }

@@ -1,16 +1,26 @@
 package com.competition.hunter.aichatting.service.member
 
+import com.competition.hunter.aichatting.auth.JwtGenerator
+import com.competition.hunter.aichatting.auth.JwtProvider
 import com.competition.hunter.aichatting.domain.postgres.Member
+import com.competition.hunter.aichatting.domain.redis.RefreshToken
 import com.competition.hunter.aichatting.dto.SignInDto
 import com.competition.hunter.aichatting.dto.SignUpDto
 import com.competition.hunter.aichatting.repository.postgres.MemberRepository
+import com.competition.hunter.aichatting.repository.redis.RefreshTokenRepository
+import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import java.util.regex.Pattern
 
 @Service
-class MemberService(
-    private val memberRepository: MemberRepository
+class AuthService(
+    private val memberRepository: MemberRepository,
+    private val refreshTokenRepository: RefreshTokenRepository,
+    private val jwtGenerator: JwtGenerator,
+    private val jwtProvider: JwtProvider
 ) {
+
     fun signUp(dto: SignUpDto): String {
         if (!validateSignUp(dto)) {
             return "fail"
@@ -28,12 +38,18 @@ class MemberService(
         return "success"
     }
 
-    fun signIn(dto: SignInDto): String {
+    fun login(dto: SignInDto, response: HttpServletResponse): ResponseEntity<Map<String, String>> {
         if (!validateSignIn(dto)) {
-            return "fail"
+            return ResponseEntity.badRequest().body(mapOf("result" to "fail"))
         }
 
-        return "success"
+        var refresh = jwtGenerator.createRefreshToken(dto.email, "user")
+
+        jwtGenerator.setHeaderAccessToken(response, dto.email, "user")
+        jwtGenerator.setHeaderRefreshToken(response, refresh)
+        refreshTokenRepository.save(RefreshToken(dto.email, refresh))
+
+        return ResponseEntity.ok().body(mapOf("result" to "success"))
     }
 
     private fun validateSignIn(dto: SignInDto): Boolean {
