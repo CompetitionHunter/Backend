@@ -1,5 +1,7 @@
 package com.competition.hunter.aichatting.auth
 
+import com.competition.hunter.aichatting.domain.redis.BlackListToken
+import com.competition.hunter.aichatting.repository.redis.BlackListTokenRepository
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
@@ -13,11 +15,15 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
-import java.util.Date
+import java.util.*
 import javax.crypto.SecretKey
 
 @Component
-class JwtProvider(@Value("\${jwt.key}") private val secretKey: String, private val userDetailService: UserDetailService) {
+class JwtProvider(
+    @Value("\${jwt.key}") private val secretKey: String,
+    private val userDetailService: UserDetailService,
+    private val blacklistRepository: BlackListTokenRepository
+) {
 
     private lateinit var key: SecretKey
 
@@ -48,8 +54,17 @@ class JwtProvider(@Value("\${jwt.key}") private val secretKey: String, private v
         return false
     }
 
-    fun getToken(request: HttpServletRequest): String? {
+    fun isBlackListToken(accessToken: String): Boolean{
+        val blacklist: Optional<BlackListToken> = blacklistRepository.findById(getUserEmail(accessToken!!))
+        return blacklist.isPresent && blacklist.get().blacklist == accessToken
+    }
+
+    fun getAccessToken(request: HttpServletRequest): String? {
         return request.getHeader("Authorization")
+    }
+
+    fun getRefreshToken(request: HttpServletRequest): String? {
+        return request.getHeader("RefreshToken").split("bearer ")[1]
     }
 
     fun getAuthentication(token: String): Authentication {

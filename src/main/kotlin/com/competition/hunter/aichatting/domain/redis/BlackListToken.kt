@@ -3,10 +3,9 @@ package com.competition.hunter.aichatting.domain.redis
 import org.springframework.data.annotation.Id
 import org.springframework.data.redis.core.RedisHash
 
-
-@RedisHash("refresh")
-data class RefreshToken (
+@RedisHash("blacklist")
+data class BlackListToken(
     @Id
     val email: String,
-    val refresh: String
+    val blacklist: String
 )

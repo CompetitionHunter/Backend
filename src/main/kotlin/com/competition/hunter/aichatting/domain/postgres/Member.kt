@@ -74,7 +74,7 @@ class Member(
         return pw
     }
     override fun getUsername(): String {
-        return username
+        return email
     }
     override fun isAccountNonExpired(): Boolean {
         return true

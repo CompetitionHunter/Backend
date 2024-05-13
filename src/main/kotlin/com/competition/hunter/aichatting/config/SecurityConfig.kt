@@ -20,14 +20,13 @@ class SecurityConfig(private val jwtTokenProvider: JwtProvider) {
         http
             .csrf { it.disable() }
             .headers { it.frameOptions { frameOptions -> frameOptions.sameOrigin() } }
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
-                it.requestMatchers("/auth/**").permitAll()
-                    .requestMatchers("/api/**").authenticated()
+                it.requestMatchers(*arrayOf("/auth/signUp", "/auth/login")).permitAll()
+                    .requestMatchers("/auth/logout", "/api/**").permitAll() // .authenticated() TODO: 배포 시 수정
                     .requestMatchers(PathRequest.toH2Console()).permitAll() // TODO: 배포 시 삭제
             }
-            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .addFilterBefore(JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)
-
         return http.build()
     }
 
