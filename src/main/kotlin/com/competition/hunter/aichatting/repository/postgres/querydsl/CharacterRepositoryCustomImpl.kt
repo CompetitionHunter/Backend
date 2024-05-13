@@ -28,7 +28,7 @@ class CharacterRepositoryCustomImpl(
         return queryFactory
             .from(qCharacter)
             .orderBy(qCharacter.subscribes.size().desc())
-            .fetch() as List<Character>
+            .fetchAll() as List<Character>
     }
 
     override fun getByTitleAndName(work: Work, name: String): Character {

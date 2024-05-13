@@ -1,6 +1,7 @@
 package com.competition.hunter.aichatting.domain.postgres;
 
 import com.competition.hunter.aichatting.domain.util.RequestStatus
+import com.competition.hunter.aichatting.dto.RequestCharacterDto
 import jakarta.persistence.*;
 import lombok.Data;
 import javax.jdo.annotations.Join
@@ -45,6 +46,14 @@ class RequestCharacter (
 
     fun approveRequest() {
         this.requestStatus = RequestStatus.APPROVE
+    }
+
+    fun toRequestCharacterDto(): RequestCharacterDto {
+        return RequestCharacterDto(
+            this.id!!,
+            this.workTitle,
+            this.characterName
+        )
     }
 
 }

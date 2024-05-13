@@ -28,7 +28,7 @@ class WorkRepositoryCustomImpl(
             .groupBy(
                 qWork.title
             )
-            .fetch() as List<Work>
+            .fetchAll() as List<Work>
     }
 
 }
