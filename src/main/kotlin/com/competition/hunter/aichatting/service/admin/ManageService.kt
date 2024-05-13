@@ -6,6 +6,8 @@ import com.competition.hunter.aichatting.repository.postgres.CharacterRepository
 import com.competition.hunter.aichatting.repository.postgres.RequestCharacterRepository
 import com.competition.hunter.aichatting.repository.postgres.WorkRepository
 import lombok.RequiredArgsConstructor
+import org.springframework.http.HttpEntity
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 
 @Service
@@ -23,5 +25,20 @@ class ManageService(
 
     fun getApproveCharacters(): List<RequestCharacterDto> {
         return requestCharacterRepository.getRequestByStatus(RequestStatus.APPROVE).map { it.toRequestCharacterDto() }
+    }
+
+    fun rejectRequestCharacter(id: Long): ResponseEntity<Map<String, String>> {
+        if (!existRequestCharacter(id)) {
+            return ResponseEntity.status(400).body(mapOf("result" to "fail"))
+        }
+        val requestCharacter = requestCharacterRepository.getRequestById(id)
+        requestCharacter!!.rejectRequest()
+        requestCharacterRepository.save(requestCharacter)
+        return ResponseEntity.ok().body(mapOf("result" to "success"))
+    }
+
+    private fun existRequestCharacter(id: Long): Boolean {
+        if (requestCharacterRepository.existRequestById(id)) return true
+        return false
     }
 }

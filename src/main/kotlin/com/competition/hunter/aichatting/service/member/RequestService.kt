@@ -37,7 +37,7 @@ class RequestService(
     }
 
     private fun existRequest(title: String, name: String): Boolean {
-        if (requestCharacterRepository.existRequest(title, name)) return true
+        if (requestCharacterRepository.existRequestByTitleAndName(title, name)) return true
         return false
     }
 

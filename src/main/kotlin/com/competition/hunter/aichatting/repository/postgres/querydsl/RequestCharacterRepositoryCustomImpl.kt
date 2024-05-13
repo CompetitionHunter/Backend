@@ -21,7 +21,7 @@ class RequestCharacterRepositoryCustomImpl(
             .fetch() as List<RequestCharacter>
     }
 
-    override fun existRequest(title: String, name: String): Boolean {
+    override fun existRequestByTitleAndName(title: String, name: String): Boolean {
         return !getRequestByTitleAndName(title, name).isEmpty()
     }
 
@@ -35,4 +35,16 @@ class RequestCharacterRepositoryCustomImpl(
             .fetch() as List<RequestCharacter>
     }
 
+    override fun getRequestById(id: Long): RequestCharacter? {
+        return queryFactory
+            .from(qRequestCharacter)
+            .where(
+                qRequestCharacter.id.eq(id)
+            )
+            .fetchOne() as RequestCharacter?
+    }
+
+    override fun existRequestById(id: Long): Boolean {
+        return getRequestById(id) != null
+    }
 }
