@@ -20,4 +20,8 @@ class ManageService(
     fun getRejectCharacters(): List<RequestCharacterDto>  {
         return requestCharacterRepository.getRequestByStatus(RequestStatus.REJECT).map { it.toRequestCharacterDto() }
     }
+
+    fun getApproveCharacters(): List<RequestCharacterDto> {
+        return requestCharacterRepository.getRequestByStatus(RequestStatus.APPROVE).map { it.toRequestCharacterDto() }
+    }
 }

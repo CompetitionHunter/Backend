@@ -12,13 +12,18 @@ import org.springframework.web.bind.annotation.RestController
 class AdminController(private val manageService: ManageService) {
 
     @GetMapping("/character/request")
-    fun getAllRequestCharacter(req: HttpServletRequest): List<RequestCharacterDto> {
+    fun getRequestCharacters(req: HttpServletRequest): List<RequestCharacterDto> {
         return manageService.getRequestCharacters()
     }
 
      @GetMapping("/character/reject")
-     fun getAllRejectCharacter(req: HttpServletRequest): List<RequestCharacterDto> {
+     fun getRejectCharacters(req: HttpServletRequest): List<RequestCharacterDto> {
          return manageService.getRejectCharacters()
      }
+
+    @GetMapping("/character/approve")
+    fun getApproveCharacters(req: HttpServletRequest): List<RequestCharacterDto> {
+        return manageService.getApproveCharacters()
+    }
 
 }
