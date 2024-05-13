@@ -2,6 +2,7 @@ package com.competition.hunter.aichatting.repository.postgres.querydsl
 
 import com.competition.hunter.aichatting.domain.postgres.Character
 import com.competition.hunter.aichatting.domain.postgres.QCharacter
+import com.competition.hunter.aichatting.domain.postgres.Work
 import com.querydsl.jpa.impl.JPAQueryFactory
 import org.springframework.stereotype.Component
 
@@ -28,5 +29,19 @@ class CharacterRepositoryCustomImpl(
             .from(qCharacter)
             .orderBy(qCharacter.subscribes.size().desc())
             .fetch() as List<Character>
+    }
+
+    override fun getByTitleAndName(work: Work, name: String): Character {
+        return queryFactory
+            .from(qCharacter)
+            .where(
+                qCharacter.work.eq(work),
+                qCharacter.name.eq(name)
+            )
+            .fetchFirst() as Character
+    }
+
+    override fun existsByTitleAndName(work: Work, name: String): Boolean {
+        return getByTitleAndName(work, name) != null
     }
 }

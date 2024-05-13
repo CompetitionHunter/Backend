@@ -1,6 +1,6 @@
 package com.competition.hunter.aichatting.domain.postgres
 
-import com.competition.hunter.aichatting.domain.postgres.util.RequestStatus
+import com.competition.hunter.aichatting.domain.util.RequestStatus
 import com.competition.hunter.aichatting.repository.postgres.CharacterRepository
 import com.competition.hunter.aichatting.repository.postgres.RequestCharacterRepository
 import com.competition.hunter.aichatting.repository.postgres.WorkRepository

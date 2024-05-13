@@ -23,7 +23,7 @@ class SecurityConfig(private val jwtTokenProvider: JwtProvider) {
             .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .authorizeHttpRequests {
                 it.requestMatchers(*arrayOf("/auth/signUp", "/auth/login")).permitAll()
-                    .requestMatchers("/auth/logout", "/api/**").permitAll() // .authenticated() TODO: 배포 시 수정
+                    .requestMatchers(*arrayOf("/auth/logout", "/api/**")).authenticated()
                     .requestMatchers(PathRequest.toH2Console()).permitAll() // TODO: 배포 시 삭제
             }
             .addFilterBefore(JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter::class.java)
