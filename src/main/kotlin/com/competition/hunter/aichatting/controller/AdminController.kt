@@ -13,7 +13,12 @@ class AdminController(private val manageService: ManageService) {
 
     @GetMapping("/character/request")
     fun getAllRequestCharacter(req: HttpServletRequest): List<RequestCharacterDto> {
-        return manageService.getAllRequestCharacter()
+        return manageService.getRequestCharacters()
     }
+
+     @GetMapping("/character/reject")
+     fun getAllRejectCharacter(req: HttpServletRequest): List<RequestCharacterDto> {
+         return manageService.getRejectCharacters()
+     }
 
 }

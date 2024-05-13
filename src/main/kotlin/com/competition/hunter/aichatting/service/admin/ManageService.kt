@@ -13,7 +13,11 @@ import org.springframework.stereotype.Service
 class ManageService(
     private val requestCharacterRepository: RequestCharacterRepository
 ) {
-    fun getAllRequestCharacter(): List<RequestCharacterDto>  {
+    fun getRequestCharacters(): List<RequestCharacterDto>  {
         return requestCharacterRepository.getRequestByStatus(RequestStatus.REQUEST).map { it.toRequestCharacterDto() }
+    }
+
+    fun getRejectCharacters(): List<RequestCharacterDto>  {
+        return requestCharacterRepository.getRequestByStatus(RequestStatus.REJECT).map { it.toRequestCharacterDto() }
     }
 }
