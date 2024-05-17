@@ -30,4 +30,9 @@ class AdminController(private val manageService: ManageService) {
         return manageService.rejectRequestCharacter(id)
     }
 
+    @PostMapping("/request/approve/{id}")
+    fun approveRequestCharacter(@PathVariable("id") id: Long, @RequestBody urls: List<String>, req: HttpServletRequest): HttpEntity<Map<String, String>> {
+        return manageService.approveRequestCharacter(id, urls)
+    }
+
 }
